@@ -1,6 +1,8 @@
 package com.campusdigitalfp.filmoteca
 
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
@@ -39,6 +41,7 @@ fun AboutScreen() {
     //val para pasar composables
     val context = LocalContext.current
     val toastMessage = stringResource(R.string.mensaje_toast)
+    val contextSoporte = R.string.incidencia_con_filmoteca
 
 
     Column(
@@ -57,23 +60,55 @@ fun AboutScreen() {
         )
 
         Row() {
+            // --BOTON WEB--
             Button(onClick = {
-                showToast(context = context,toastMessage)
+                //funcionIncompleta(context = context,toastMessage)
+                abrirPaginaWeb("https://www.google.es", context)
             }) {
                 Text(text = stringResource(R.string.btn_web))
             }
-            Button(onClick = { showToast(context, toastMessage) }) {
+
+
+            // --BOTON SOPORTE--
+            Button(onClick = {
+                //funcionIncompleta(context, toastMessage)
+                mandarEmail(
+                    context,
+                    "eagullof@campusdigitalfp.es",
+                    context.getString(contextSoporte)
+                )
+            }) {
                 Text(text = stringResource(R.string.btn_soporte))
             }
         }
 
-        Button(onClick = { showToast(context, toastMessage) }) {
+        // --BOTON VOLVER--
+        Button(onClick = { funcionIncompleta(context, toastMessage) }) {
             Text(text = stringResource(R.string.btn_volver))
         }
     }
 }
 
-fun showToast(context: Context, message: String) {
+fun mandarEmail(context: Context, email: String, asunto: String) {
+    val intent = Intent(Intent.ACTION_SENDTO).apply {
+        data = Uri.parse("mailto:$email")
+        putExtra(Intent.EXTRA_SUBJECT, asunto)
+    }
+
+    // Verifica si hay una aplicación que puede manejar el Intent
+    if (intent.resolveActivity(context.packageManager) != null) {
+        context.startActivity(intent)
+    }
+}
+
+fun abrirPaginaWeb(s: String, context: Context) {
+    val intent = Intent(Intent.ACTION_VIEW).apply {
+        data = Uri.parse(s)
+    }
+    context.startActivity(intent)
+}
+
+fun funcionIncompleta(context: Context, message: String) {
     Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
 }
 

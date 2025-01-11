@@ -5,4 +5,5 @@
     <string name="btn_soporte">Obtener soporte</string>
     <string name="btn_volver">Volver</string>
     <string name="mensaje_toast">Funcionalidad sin implementar</string>
+    <string name="incidencia_con_filmoteca">VACIO\n</string>
 </resources>
