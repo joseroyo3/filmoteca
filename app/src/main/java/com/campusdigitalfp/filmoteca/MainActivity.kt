@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -14,16 +13,15 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.campusdigitalfp.filmoteca.ui.theme.FilmotecaTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,33 +36,39 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun AboutScreen() {
 
+    //val para pasar composables
     val context = LocalContext.current
+    val toastMessage = stringResource(R.string.mensaje_toast)
 
 
     Column(
-        modifier = Modifier.padding(16.dp).fillMaxSize(),
+        modifier = Modifier
+            .padding(16.dp)
+            .fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement  = Arrangement.Center
+        verticalArrangement = Arrangement.Center
     ) {
-        Text(text = "Creada por TuNombre")
+        Text(text = stringResource(R.string.creador))
 
         Image(
             painter = painterResource(id = R.drawable.perfil),
-            contentDescription = "Foto perfil",
+            contentDescription = stringResource(R.string.creador),
             Modifier.size(50.dp)
         )
 
         Row() {
-            Button(onClick = {showToast(context= context, message = "Funcionalidad sin implementar")}) {
-                Text(text = "Ir al sitio web")
+            Button(onClick = {
+                showToast(context = context,toastMessage)
+            }) {
+                Text(text = stringResource(R.string.btn_web))
             }
-            Button(onClick = { showToast(context, "Funcionalidad sin implementar") }) {
-                Text(text = "Obtener soporte")
+            Button(onClick = { showToast(context, toastMessage) }) {
+                Text(text = stringResource(R.string.btn_soporte))
             }
         }
 
-        Button(onClick = { showToast(context,"Funcionalidad sin implementar") }) {
-            Text(text = "Volver")
+        Button(onClick = { showToast(context, toastMessage) }) {
+            Text(text = stringResource(R.string.btn_volver))
         }
     }
 }

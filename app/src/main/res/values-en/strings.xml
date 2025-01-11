@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Film Library</string>
+    <string name="creador">Created by Jose Royo Andreu</string>
+    <string name="btn_web">Go to website</string>
+    <string name="btn_soporte">Get support</string>
+    <string name="btn_volver">Back</string>
+    <string name="mensaje_toast">Feature not implemented</string>
+</resources>

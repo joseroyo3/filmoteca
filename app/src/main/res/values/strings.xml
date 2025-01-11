@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Filmoteca</string>
+    <string name="creador">Creada por Jose Royo Andreu</string>
+    <string name="btn_web">Ir al sitio web</string>
+    <string name="btn_soporte">Obtener soporte</string>
+    <string name="btn_volver">Volver</string>
+    <string name="mensaje_toast">Funcionalidad sin implementar</string>
 </resources>
