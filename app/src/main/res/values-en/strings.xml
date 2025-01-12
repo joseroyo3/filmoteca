@@ -7,14 +7,30 @@
     <string name="mensaje_toast">Feature not implemented</string>
     <string name="incidencia_con_filmoteca">EMPTY\n</string>
     //Film List
-    <string name="verPeliA">Ver pel�cula A</string>
-    <string name="verPeliB">Ver pel�cula B</string>
-    <string name="acercaDe">Acerca de</string>
+    <string name="verPeliA">View Movie A</string>
+    <string name="verPeliB">View Movie B</string>
+    <string name="acercaDe">About</string>
     //Film Data
-    <string name="verIMDB">Ver pel�cula Relacionada</string>
-    <string name="editarPelicula">Editar pel�cula</string>
-    <string name="volverMain">Volver a la principal</string>
+    <string name="verIMDB">View Related Movie</string>
+    <string name="editarPelicula">Edit Movie</string>
+    <string name="volverMain">Back to Main</string>
     //Film Edit
-    <string name="guardar">Guardar</string>
-    <string name="cancelar">Cancelar</string>
+    <string name="guardar">Save</string>
+    <string name="cancelar">Cancel</string>
+
+    //ARRAY GENERO
+    <string-array name="genero_list">
+        <item>Action</item>
+        <item>Drama</item>
+        <item>Comedy</item>
+        <item>Horror</item>
+        <item>Sci-Fi</item>
+    </string-array>
+
+    //ARRAY FORMATO
+    <string-array name="formato_list">
+        <item>DVD</item>
+        <item>Blu-ray</item>
+        <item>Online</item>
+    </string-array>
 </resources>

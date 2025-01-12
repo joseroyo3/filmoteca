@@ -18,5 +18,20 @@
     <string name="guardar">Guardar</string>
     <string name="cancelar">Cancelar</string>
 
+    //ARRAY GENERO
+    <string-array name="genero_list">
+        <item>Acción</item>
+        <item>Drama</item>
+        <item>Comedia</item>
+        <item>Terror</item>
+        <item>Sci-Fi</item>
+    </string-array>
+
+    //ARRAY FORMATO
+    <string-array name="formato_list">
+        <item>DVD</item>
+        <item>Blu-ray</item>
+        <item>Online</item>
+    </string-array>
 
 </resources>
