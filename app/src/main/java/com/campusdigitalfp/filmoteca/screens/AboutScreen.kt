@@ -11,8 +11,15 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Button
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -23,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.campusdigitalfp.filmoteca.R
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AboutScreen(navController: NavHostController) {
 
@@ -31,51 +39,69 @@ fun AboutScreen(navController: NavHostController) {
     val toastMessage = stringResource(R.string.mensaje_toast)
     val contextSoporte = R.string.incidencia_con_filmoteca
 
-
-    Column(
-        modifier = Modifier
-            .padding(16.dp)
-            .fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-        Text(text = stringResource(R.string.creador))
-
-        Image(
-            painter = painterResource(id = R.drawable.perfil),
-            contentDescription = stringResource(R.string.creador),
-            Modifier.size(50.dp)
-        )
-
-        Row() {
-            // --BOTON WEB--
-            Button(onClick = {
-                //funcionIncompleta(context = context,toastMessage)
-                abrirPaginaWeb("https://www.google.es", context)
-            }) {
-                Text(text = stringResource(R.string.btn_web))
-            }
-
-
-            // --BOTON SOPORTE--
-            Button(onClick = {
-                //funcionIncompleta(context, toastMessage)
-                mandarEmail(
-                    context,
-                    "eagullof@campusdigitalfp.es",
-                    context.getString(contextSoporte)
-                )
-            }) {
-                Text(text = stringResource(R.string.btn_soporte))
-            }
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text(text = "Filmoteca") },
+                navigationIcon = {
+                    IconButton(onClick = {
+                        navController.popBackStack()
+                    }) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = "Atrás"
+                        )
+                    }
+                }
+            )
         }
+    ) {
 
-        // --BOTON VOLVER--
-        Button(onClick = { funcionIncompleta(context, toastMessage) }) {
-            Text(text = stringResource(R.string.btn_volver))
+
+        Column(
+            modifier = Modifier
+                .padding(it)// Aquí `it` es un PaddingValues de Scaffol, por eso sustituyo el 16.dp
+                .fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            Text(text = stringResource(R.string.creador))
+
+            Image(
+                painter = painterResource(id = R.drawable.perfil),
+                contentDescription = stringResource(R.string.creador),
+                Modifier.size(50.dp)
+            )
+
+            Row() {
+                // --BOTON WEB--
+                Button(onClick = {
+                    //funcionIncompleta(context = context,toastMessage)
+                    abrirPaginaWeb("https://www.google.es", context)
+                }) {
+                    Text(text = stringResource(R.string.btn_web))
+                }
+
+
+                // --BOTON SOPORTE--
+                Button(onClick = {
+                    //funcionIncompleta(context, toastMessage)
+                    mandarEmail(
+                        context,
+                        "eagullof@campusdigitalfp.es",
+                        context.getString(contextSoporte)
+                    )
+                }) {
+                    Text(text = stringResource(R.string.btn_soporte))
+                }
+            }
+
+            // --BOTON VOLVER--
+            Button(onClick = { funcionIncompleta(context, toastMessage) }) {
+                Text(text = stringResource(R.string.btn_volver))
+            }
         }
     }
-
 
 }
 

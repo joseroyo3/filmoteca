@@ -5,8 +5,15 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Button
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -14,13 +21,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.campusdigitalfp.filmoteca.R
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.getValue
 
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FilmDataScreen(navController: NavHostController, pelicula: String) {
     // Recibimos datos con el savedStateHandle del NavController
@@ -51,32 +57,51 @@ fun FilmDataScreen(navController: NavHostController, pelicula: String) {
         }
     }
 
-    Column(
-        modifier = Modifier
-            .padding(16.dp)
-            .fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text(text = "Filmoteca") },
+                navigationIcon = {
+                    IconButton(onClick = {
+                        navController.popBackStack()
+                    }) {
+                       Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = "Atrás"
+                        )
+                    }
+                }
+            )
+        }
     ) {
-        Text(text = "Datos de la $pelicula")
+        Column(
+            modifier = Modifier
+                .padding(it) // Aquí `it` es un PaddingValues de Scaffol, por eso sustituyo el 16.dp
+                .fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            Text(text = "Datos de la $pelicula")
 
-        Button(onClick = {
-            navController.navigate("FilmDataScreen/Pelicula Relacionada")
-        }) {
-            Text(text = stringResource(R.string.verPeliRel))
-        }
+            Button(onClick = {
+                navController.navigate("FilmDataScreen/Pelicula Relacionada")
+            }) {
+                Text(text = stringResource(R.string.verPeliRel))
+            }
 
-        Button(onClick = {
-            navController.navigate("FilmEditScreen")
-        }) {
-            Text(text = stringResource(R.string.editarPelicula))
-        }
+            Button(onClick = {
+                navController.navigate("FilmEditScreen")
+            }) {
+                Text(text = stringResource(R.string.editarPelicula))
+            }
 
-        Button(onClick = {
-            // Elimina todo el historial de pantallas
-            navController.popBackStack("FilmListScreen", false)
-        }) {
-            Text(text = stringResource(R.string.volverMain))
+            Button(onClick = {
+                // Elimina todo el historial de pantallas
+                navController.popBackStack("FilmListScreen", false)
+            }) {
+                Text(text = stringResource(R.string.volverMain))
+            }
         }
     }
 }
