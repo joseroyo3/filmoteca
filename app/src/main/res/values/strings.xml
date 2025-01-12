@@ -7,13 +7,13 @@
     <string name="mensaje_toast">Funcionalidad sin implementar</string>
     <string name="incidencia_con_filmoteca">VACIO</string>
     //Film List
-    <string name="verPeliA">Ver pel�cula A</string>
-    <string name="verPeliB">Ver pel�cula B</string>
+    <string name="verPeliA">Ver película A</string>
+    <string name="verPeliB">Ver película B</string>
     <string name="acercaDe">Acerca de</string>
     //Film Data
-    <string name="verPeliRel">Ver pel�cula Relacionada</string>
-    <string name="editarPelicula">Editar pel�cula</string>
-    <string name="volverMain">Volver a la principal</string>
+    <string name="verIMDB">Ver en IMDB</string>
+    <string name="editarPelicula">Editar</string>
+    <string name="volverMain">Volver</string>
     //Film Edit
     <string name="guardar">Guardar</string>
     <string name="cancelar">Cancelar</string>

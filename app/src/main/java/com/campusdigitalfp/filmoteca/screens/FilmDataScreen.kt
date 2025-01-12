@@ -1,9 +1,14 @@
 package com.campusdigitalfp.filmoteca.screens
 
+import android.content.Intent
+import android.net.Uri
 import android.widget.Toast
-import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import android.content.Context
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -11,6 +16,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -24,6 +30,22 @@ import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
 import com.campusdigitalfp.filmoteca.R
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.navigation.compose.rememberNavController
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Preview(showBackground = true)
+@Composable
+fun FilmDataScreenPreview() {
+    // Simular un NavHostController
+    val navController = rememberNavController()
+
+    // Mostrar la pantalla con un título ficticio
+    FilmDataScreen(navController = navController, pelicula = "Película de Ejemplo")
+}
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -57,6 +79,7 @@ fun FilmDataScreen(navController: NavHostController, pelicula: String) {
         }
     }
 
+    val pad = 6.dp
 
     Scaffold(
         topBar = {
@@ -66,7 +89,7 @@ fun FilmDataScreen(navController: NavHostController, pelicula: String) {
                     IconButton(onClick = {
                         navController.popBackStack()
                     }) {
-                       Icon(
+                        Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = "Atrás"
                         )
@@ -75,33 +98,105 @@ fun FilmDataScreen(navController: NavHostController, pelicula: String) {
             )
         }
     ) {
+
         Column(
             modifier = Modifier
                 .padding(it) // Aquí `it` es un PaddingValues de Scaffol, por eso sustituyo el 16.dp
                 .fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+            //horizontalAlignment = Alignment.CenterHorizontally,
+            //verticalArrangement = Arrangement.Center
         ) {
-            Text(text = "Datos de la $pelicula")
+            Row(modifier = Modifier.padding(pad)) {
+                Image(
+                    painter = painterResource(R.drawable.harry1),
+                    contentDescription = "HP y la piedra",
+                    modifier = Modifier.padding(pad)
+                )
+                Column(modifier = Modifier.padding(pad)) {
+                    //Text(text = "Datos de la $pelicula")
+                    // Título de la película con estilo destacado
+                    Text(
+                        text = "Harry Potter y la piedra filosofal",
+                        style = MaterialTheme.typography.headlineMedium, // Estilo grande para el título
+                        color = MaterialTheme.colorScheme.primary // Color principal
+                        // Espaciado inferior
+                    )
 
-            Button(onClick = {
-                navController.navigate("FilmDataScreen/Pelicula Relacionada")
-            }) {
-                Text(text = stringResource(R.string.verPeliRel))
+                    // Director
+                    Text(
+                        text = "Director:",
+                        style = MaterialTheme.typography.titleSmall,
+                        fontWeight = FontWeight.Bold
+                    )
+                    Text(
+                        text = "Chris Columbus"
+                    )
+
+                    // Año
+                    Text(
+                        text = "Año:",
+                        style = MaterialTheme.typography.titleSmall,
+                        fontWeight = FontWeight.Bold
+                    )
+                    Text(
+                        text = "2001",
+                    )
+
+                    // Formato y género
+                    Text(
+                        text = "BluRay, Sci-Fi"
+                    )
+
+                }
             }
 
-            Button(onClick = {
-                navController.navigate("FilmEditScreen")
-            }) {
-                Text(text = stringResource(R.string.editarPelicula))
+            val context = LocalContext.current
+
+            Button(
+                onClick = {
+                    abrirWeb("https://www.imdb.com/es-es/title/tt0241527/", context)
+                },
+                modifier = Modifier
+                    .padding(pad)
+                    .fillMaxWidth()
+            ) {
+                Text(text = stringResource(R.string.verIMDB))
             }
 
-            Button(onClick = {
-                // Elimina todo el historial de pantallas
-                navController.popBackStack("FilmListScreen", false)
-            }) {
-                Text(text = stringResource(R.string.volverMain))
+
+            Text(text = "Version extendida", modifier = Modifier.padding(pad))
+
+            Row() {
+                Button(
+                    onClick = {
+                        navController.navigate("FilmEditScreen")
+                    }, modifier = Modifier
+                        .weight(1f)
+                        .padding(pad)
+                ) {
+                    Text(text = stringResource(R.string.editarPelicula))
+                }
+
+                Button(
+                    onClick = {
+                        // Elimina todo el historial de pantallas
+                        navController.popBackStack("FilmListScreen", false)
+                    }, modifier = Modifier
+                        .weight(1f)
+                        .padding(pad)
+                ) {
+                    Text(text = stringResource(R.string.volverMain))
+                }
             }
         }
     }
+}
+
+fun abrirWeb(s: String, context: Context) {
+    val imdbIntent = Intent(
+        Intent.ACTION_VIEW,
+        Uri.parse(s)
+    )
+    context.startActivity(imdbIntent)
+
 }
