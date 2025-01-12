@@ -25,13 +25,13 @@ fun FilmListScreen(navController: NavHostController) {
         verticalArrangement = Arrangement.Center
     ) {
         Button(onClick = {
-            navController.navigate("FilmDataScreen")
+            navController.navigate("FilmDataScreen/Pelicula A")
         }) {
             Text(text = stringResource(R.string.verPeliA))
         }
 
         Button(onClick = {
-            navController.navigate("FilmDataScreen")
+            navController.navigate("FilmDataScreen/Pelicula B")
         }) {
             Text(text = stringResource(R.string.verPeliB))
         }

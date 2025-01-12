@@ -15,7 +15,7 @@ import androidx.navigation.NavHostController
 import com.campusdigitalfp.filmoteca.R
 
 @Composable
-fun FilmDataScreen(navController: NavHostController) {
+fun FilmDataScreen(navController: NavHostController, pelicula : String) {
     Column(
         modifier = Modifier
             .padding(16.dp)
@@ -23,10 +23,10 @@ fun FilmDataScreen(navController: NavHostController) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Text(text = "Datos de la pelicula")
+        Text(text = "Datos de la $pelicula")
 
         Button(onClick = {
-            navController.navigate("FilmDataScreen")
+            navController.navigate("FilmDataScreen/Pelicula Relacionada")
         }) {
             Text(text = stringResource(R.string.verPeliRel))
         }
