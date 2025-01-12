@@ -23,7 +23,6 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -108,7 +107,7 @@ fun FilmDataScreen(navController: NavHostController, pelicula: String) {
         ) {
             Row(modifier = Modifier.padding(pad)) {
                 Image(
-                    painter = painterResource(R.drawable.harry1),
+                    painter = painterResource(R.drawable.harry_potter_y_la_piedra_filosofal),
                     contentDescription = "HP y la piedra",
                     modifier = Modifier.padding(pad)
                 )
