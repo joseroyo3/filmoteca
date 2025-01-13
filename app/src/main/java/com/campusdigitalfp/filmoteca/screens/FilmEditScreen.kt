@@ -30,14 +30,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.campusdigitalfp.filmoteca.R
+import com.campusdigitalfp.filmoteca.sampledata.FilmDataSource
 
-const val RESULT_OK = "RESULT_OK"
+const val RESULT_OK = "Guardado con éxito"
 const val RESULT_CANCELED = "RESULT_CANCELED"
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -48,12 +50,12 @@ fun FilmEditScreenPreview() {
     val navController = rememberNavController()
 
     // Llamar a la pantalla principal con un controlador de navegación simulado
-    FilmEditScreen(navController = navController)
+    FilmEditScreen(navController = navController, indice = 1)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FilmEditScreen(navController: NavHostController) {
+fun FilmEditScreen(navController: NavHostController, indice: Int) {
 
     Scaffold(
         topBar = {
@@ -72,6 +74,19 @@ fun FilmEditScreen(navController: NavHostController) {
             )
         }
     ) {
+        var films = FilmDataSource.films
+        val film = films.getOrNull(indice)
+        var titulo by remember { mutableStateOf(film?.title) }
+        var director by remember { mutableStateOf(film?.director) }
+        var anyo by remember { mutableIntStateOf(film?.year ?: 0) }
+        var url by remember { mutableStateOf(film?.imdbUrl) }
+        var imagen by remember { mutableIntStateOf(film?.imageResId ?: 0) }
+        var comentarios by remember { mutableStateOf(film?.comments) }
+
+        var genero by remember { mutableIntStateOf(film?.genre ?: 0) }
+        var formato by remember { mutableIntStateOf(film?.format ?: 0) }
+
+
         var pad = 6.dp
         Column {
             Row(
@@ -82,7 +97,7 @@ fun FilmEditScreen(navController: NavHostController) {
             ) {
                 // IMAGEN
                 Image(
-                    painter = painterResource(R.drawable.harry_potter_y_la_piedra_filosofal),
+                    painter = painterResource(imagen),
                     contentDescription = "HP y la piedra",
                     modifier = Modifier
                         .size(80.dp)
@@ -112,12 +127,13 @@ fun FilmEditScreen(navController: NavHostController) {
                 }
             }
 
-            var titulo by remember { mutableStateOf("") }
-            var director by remember { mutableStateOf("") }
-            var anyo by remember { mutableIntStateOf(1997) }
-            var url by remember { mutableStateOf("") }
-            var imagen by remember { mutableIntStateOf(0) }
-            var comentarios by remember { mutableStateOf("") }
+
+            //var titulo by remember { mutableStateOf("") }
+            //var director by remember { mutableStateOf("") }
+            //var anyo by remember { mutableIntStateOf(1997) }
+            //var url by remember { mutableStateOf("") }
+            //var imagen by remember { mutableIntStateOf(0) }
+            //var comentarios by remember { mutableStateOf("") }
 
             var expandedGenero by remember { mutableStateOf(false) }
             var expandedFormato by remember { mutableStateOf(false) }
@@ -131,12 +147,12 @@ fun FilmEditScreen(navController: NavHostController) {
             val formatoList = context.resources.getStringArray(R.array.formato_list).toList()
 
 
-            var genero by remember { mutableIntStateOf(0) }
-            var formato by remember { mutableIntStateOf(1) }
+            //var genero by remember { mutableIntStateOf(0) }
+            //var formato by remember { mutableIntStateOf(1) }
 
             //TITULO
             TextField(
-                value = titulo,
+                value = titulo.toString(),
                 onValueChange = { newText -> titulo = newText },
                 label = { Text(text = "Título") },
                 placeholder = { Text("Nombre") },
@@ -147,7 +163,7 @@ fun FilmEditScreen(navController: NavHostController) {
 
             //DIRECTOR
             TextField(
-                value = director,
+                value = director.toString(),
                 onValueChange = { newText -> director = newText },
                 label = { Text(text = "Director") },
                 placeholder = { Text("Nombre") },
@@ -218,8 +234,8 @@ fun FilmEditScreen(navController: NavHostController) {
 
             //URL IMDB
             TextField(
-                value = comentarios,
-                onValueChange = { newText -> comentarios = newText },
+                value = url.toString(),
+                onValueChange = { newText -> url = newText },
                 label = { Text(text = "Enlace IMDB") },
                 placeholder = { Text("URL") },
                 modifier = Modifier.fillMaxWidth(),
@@ -229,14 +245,54 @@ fun FilmEditScreen(navController: NavHostController) {
 
             //COMENTARIO
             TextField(
-                value = url,
-                onValueChange = { newText -> url = newText },
+                value = comentarios.toString(),
+                onValueChange = { newText -> comentarios = newText },
                 label = { Text(text = "Comentarios") },
                 placeholder = { Text("Escribe tus comentarios aquí...") },
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
             )
+
+            Row() {
+                Button(
+                    onClick = {
+                        film?.let {
+                            it.title = titulo
+                            it.director = director
+                            it.year = anyo
+                            it.imdbUrl = url
+                            it.imageResId = imagen
+                            it.comments = comentarios
+                            it.genre = genero
+                            it.format = formato
+                        }
+                        navController.previousBackStackEntry?.savedStateHandle?.set(
+                            "key_result",
+                            RESULT_OK
+                        )
+                        navController.popBackStack()
+                    }, modifier = Modifier
+                        .weight(1f)
+                        .padding(pad)
+                ) {
+                    Text(text = "Guardar")
+                }
+
+                Button(
+                    onClick = {
+                        navController.previousBackStackEntry?.savedStateHandle?.set(
+                            "key_result",
+                            RESULT_CANCELED
+                        )
+                        navController.popBackStack()
+                    }, modifier = Modifier
+                        .weight(1f)
+                        .padding(pad)
+                ) {
+                    Text(text = "Volver")
+                }
+            }
 
             /*
                         Column(

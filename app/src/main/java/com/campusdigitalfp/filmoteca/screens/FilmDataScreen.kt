@@ -10,6 +10,7 @@ import android.content.Context
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Button
@@ -29,11 +30,16 @@ import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
 import com.campusdigitalfp.filmoteca.R
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.rememberNavController
+import com.campusdigitalfp.filmoteca.sampledata.FilmDataSource
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview(showBackground = true)
@@ -43,15 +49,16 @@ fun FilmDataScreenPreview() {
     val navController = rememberNavController()
 
     // Mostrar la pantalla con un título ficticio
-    FilmDataScreen(navController = navController, pelicula = "Película de Ejemplo")
+    FilmDataScreen(navController = navController, indice = 1)
 }
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FilmDataScreen(navController: NavHostController, pelicula: String) {
+fun FilmDataScreen(navController: NavHostController, indice: Int) {
     // Recibimos datos con el savedStateHandle del NavController
     val savedStateHandle = navController.currentBackStackEntry?.savedStateHandle
+    val context = LocalContext.current
 
     // Es importante agregar las dependencias necesarias en el archivo build.gradle del módulo "App" para asegurar que la aplicación pueda utilizar las funciones de Jetpack Compose y LiveData
     //implementation("androidx.compose.runtime:runtime:1.7.5")
@@ -61,7 +68,6 @@ fun FilmDataScreen(navController: NavHostController, pelicula: String) {
     // Verifica si el savedStateHandle no es nulo antes de continuar
     if (savedStateHandle != null) {
         // Obtiene el contexto actual necesario para mostrar un Toast
-        val context = LocalContext.current
 
         // Define una variable "result" que observa un LiveData llamado "key_result" almacenado en savedStateHandle
         // Con observeAsState(), se convierte el LiveData en un estado observable por Compose
@@ -77,6 +83,10 @@ fun FilmDataScreen(navController: NavHostController, pelicula: String) {
             }
         }
     }
+
+    var films = FilmDataSource.films
+    val film = films.getOrNull(indice)
+
 
     val pad = 6.dp
 
@@ -105,21 +115,42 @@ fun FilmDataScreen(navController: NavHostController, pelicula: String) {
             //horizontalAlignment = Alignment.CenterHorizontally,
             //verticalArrangement = Arrangement.Center
         ) {
+
+            var titulo by remember { mutableStateOf(film?.title) }
+            var director by remember { mutableStateOf(film?.director) }
+            var anyo by remember { mutableIntStateOf(film?.year ?: 0) }
+            var url by remember { mutableStateOf(film?.imdbUrl) }
+            var imagen by remember { mutableIntStateOf(film?.imageResId ?: 0) }
+            var comentarios by remember { mutableStateOf(film?.comments) }
+
+            var expandedGenero by remember { mutableStateOf(false) }
+            var expandedFormato by remember { mutableStateOf(false) }
+
+            val generoList = context.resources.getStringArray(R.array.genero_list).toList()
+            val formatoList = context.resources.getStringArray(R.array.formato_list).toList()
+
+
+            var genero by remember { mutableIntStateOf(film?.genre ?: 0) }
+            var formato by remember { mutableIntStateOf(film?.format ?: 0) }
+
+
             Row(modifier = Modifier.padding(pad)) {
                 Image(
-                    painter = painterResource(R.drawable.harry_potter_y_la_piedra_filosofal),
+                    painter = painterResource(imagen),
                     contentDescription = "HP y la piedra",
-                    modifier = Modifier.padding(pad)
+                    modifier = Modifier
+                        .padding(pad)
+                        .size(160.dp)
                 )
                 Column(modifier = Modifier.padding(pad)) {
                     //Text(text = "Datos de la $pelicula")
-                    // Título de la película con estilo destacado
                     Text(
-                        text = "Harry Potter y la piedra filosofal",
+                        text = titulo.toString(),
                         style = MaterialTheme.typography.headlineMedium, // Estilo grande para el título
                         color = MaterialTheme.colorScheme.primary // Color principal
                         // Espaciado inferior
                     )
+
 
                     // Director
                     Text(
@@ -128,7 +159,7 @@ fun FilmDataScreen(navController: NavHostController, pelicula: String) {
                         fontWeight = FontWeight.Bold
                     )
                     Text(
-                        text = "Chris Columbus"
+                        text = director.toString()
                     )
 
                     // Año
@@ -138,22 +169,21 @@ fun FilmDataScreen(navController: NavHostController, pelicula: String) {
                         fontWeight = FontWeight.Bold
                     )
                     Text(
-                        text = "2001",
+                        text = "$anyo",
                     )
 
                     // Formato y género
                     Text(
-                        text = "BluRay, Sci-Fi"
+                        text = "${generoList[genero]},${formatoList[formato]}"
                     )
 
                 }
             }
 
-            val context = LocalContext.current
 
             Button(
                 onClick = {
-                    abrirWeb("https://www.imdb.com/es-es/title/tt0241527/", context)
+                    abrirWeb("$url", context)
                 },
                 modifier = Modifier
                     .padding(pad)
@@ -163,12 +193,12 @@ fun FilmDataScreen(navController: NavHostController, pelicula: String) {
             }
 
 
-            Text(text = "Version extendida", modifier = Modifier.padding(pad))
+            Text(text = "$comentarios", modifier = Modifier.padding(pad))
 
             Row() {
                 Button(
                     onClick = {
-                        navController.navigate("FilmEditScreen")
+                        navController.navigate("FilmEditScreen/$indice")
                     }, modifier = Modifier
                         .weight(1f)
                         .padding(pad)
