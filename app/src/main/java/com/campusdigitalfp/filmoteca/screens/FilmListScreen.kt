@@ -2,6 +2,7 @@ package com.campusdigitalfp.filmoteca.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -10,6 +11,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.DropdownMenu
@@ -48,7 +50,22 @@ fun FilmListScreen(navController: NavHostController) {
     Scaffold(
         topBar = {
             TopAppBar(
+
                 title = { Text(text = "Filmoteca") },
+                navigationIcon = {
+                    Box(
+                        modifier = Modifier.clickable {
+                            navController.navigate("FilmListScreen")
+                        }
+                    ) {
+                        Icon(
+                            imageVector = Icons.Filled.Home,
+                            contentDescription = "Home Icon",
+                            modifier = Modifier.padding(8.dp)
+                        )
+                    }
+                },
+                //al tener actions no he sabido usar el componente
                 actions = {
                     IconButton(onClick = { expanded = !expanded }) {
                         Icon(imageVector = Icons.Default.Menu, contentDescription = "Menú")
@@ -102,8 +119,8 @@ fun FilmListScreen(navController: NavHostController) {
                 .fillMaxSize()
         ) {
 
-            itemsIndexed(filmList) {index, film ->
-                VistaFilm(film, index,navController)
+            itemsIndexed(filmList) { index, film ->
+                VistaFilm(film, index, navController)
             }
         }
 
@@ -116,7 +133,7 @@ fun VistaFilm(film: Film, index: Int, navController: NavHostController) {
 
     Row(modifier = Modifier
         .padding(all = 8.dp)
-        .clickable { navController.navigate("FilmDataScreen/$index")}) {
+        .clickable { navController.navigate("FilmDataScreen/$index") }) {
         Image(
             painter = painterResource(film.imageResId),
             contentDescription = "${film.title}",

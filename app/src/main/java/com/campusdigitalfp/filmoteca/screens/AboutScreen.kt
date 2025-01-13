@@ -29,6 +29,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.campusdigitalfp.filmoteca.R
+import com.campusdigitalfp.filmoteca.screens.components.FilmotecaTopAppBar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -41,19 +42,8 @@ fun AboutScreen(navController: NavHostController) {
 
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = { Text(text = "Filmoteca") },
-                navigationIcon = {
-                    IconButton(onClick = {
-                        navController.popBackStack()
-                    }) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Atrás"
-                        )
-                    }
-                }
-            )
+            FilmotecaTopAppBar(navController,"Filmoteca")
+
         }
     ) {
 
