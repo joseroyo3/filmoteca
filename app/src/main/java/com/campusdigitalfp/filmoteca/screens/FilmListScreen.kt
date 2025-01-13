@@ -9,16 +9,28 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.campusdigitalfp.filmoteca.R
 import com.campusdigitalfp.filmoteca.model.Film
 import com.campusdigitalfp.filmoteca.sampledata.FilmDataSource
 
@@ -27,11 +39,59 @@ import com.campusdigitalfp.filmoteca.sampledata.FilmDataSource
 fun FilmListScreen(navController: NavHostController) {
 
     val filmList = FilmDataSource.films
+    val film = filmList.getOrNull(1)
+
+
+    var expanded by remember { mutableStateOf(false) }
+
 
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(text = "Filmoteca") }
+                title = { Text(text = "Filmoteca") },
+                actions = {
+                    IconButton(onClick = { expanded = !expanded }) {
+                        Icon(imageVector = Icons.Default.Menu, contentDescription = "Menú")
+                    }
+
+                    // MENU DESPLEGABLE
+                    DropdownMenu(
+                        expanded = expanded,
+                        onDismissRequest = { expanded = false }
+                    ) {
+                        // AÑADIR PELICULA
+                        DropdownMenuItem(
+                            text = { Text("Añadir película") },
+                            onClick = {
+                                expanded = false
+                                val nuevaPelicula = Film(
+                                    id = filmList.size,
+                                    title = "Película por defecto",
+                                    imageResId = R.drawable.pelicula_por_defecto,
+                                    director = "Director desconocido",
+                                    year = 2023,
+                                    genre = Film.GENRE_ACTION,
+                                    format = Film.FORMAT_DIGITAL,
+                                    imdbUrl = "https://www.imdb.com",
+                                    comments = ""
+                                )
+                                filmList.add(nuevaPelicula)
+                                navController.navigate("FilmListScreen")
+                                navController.popBackStack()
+                            }
+                        )
+
+                        // ACERCA DE
+                        DropdownMenuItem(
+                            text = { Text("Acerca de") },
+                            onClick = {
+                                expanded = false
+                                navController.navigate("AboutScreen")
+                            }
+                        )
+                    }
+                }
+
             )
         }
     ) {

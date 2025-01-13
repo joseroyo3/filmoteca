@@ -56,7 +56,7 @@ fun FilmDataScreenPreview() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FilmDataScreen(navController: NavHostController, indice: Int) {
-    // Recibimos datos con el savedStateHandle del NavController
+    // Recibimos datos con el savedStateHandle del NavController (para el Toast RESULT de EditScreen)
     val savedStateHandle = navController.currentBackStackEntry?.savedStateHandle
     val context = LocalContext.current
 
@@ -64,6 +64,8 @@ fun FilmDataScreen(navController: NavHostController, indice: Int) {
     //implementation("androidx.compose.runtime:runtime:1.7.5")
     //implementation("androidx.compose.runtime:runtime-livedata:1.7.5")
     //implementation("androidx.compose.runtime:runtime-rxjava2:1.7.5")
+
+
 
     // Verifica si el savedStateHandle no es nulo antes de continuar
     if (savedStateHandle != null) {
@@ -84,7 +86,7 @@ fun FilmDataScreen(navController: NavHostController, indice: Int) {
         }
     }
 
-    var films = FilmDataSource.films
+    val films = FilmDataSource.films
     val film = films.getOrNull(indice)
 
 

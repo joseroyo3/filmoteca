@@ -76,6 +76,7 @@ fun FilmEditScreen(navController: NavHostController, indice: Int) {
     ) {
         var films = FilmDataSource.films
         val film = films.getOrNull(indice)
+
         var titulo by remember { mutableStateOf(film?.title) }
         var director by remember { mutableStateOf(film?.director) }
         var anyo by remember { mutableIntStateOf(film?.year ?: 0) }
