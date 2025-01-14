@@ -1,5 +1,6 @@
 package com.campusdigitalfp.filmoteca.screens
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -247,16 +248,22 @@ fun FilmEditScreen(navController: NavHostController, indice: Int) {
             Row() {
                 Button(
                     onClick = {
-                        film?.let {
-                            it.title = titulo
-                            it.director = director
-                            it.year = anyo
-                            it.imdbUrl = url
-                            it.imageResId = imagen
-                            it.comments = comentarios
-                            it.genre = genero
-                            it.format = formato
+                        try {
+                            film?.let {
+                                it.title = titulo
+                                it.director = director
+                                it.year = anyo
+                                it.imdbUrl = url
+                                it.imageResId = imagen
+                                it.comments = comentarios
+                                it.genre = genero
+                                it.format = formato
+                            }
+                        } catch (e: Exception) {
+                            Log.e("FilmEditScreen", "Error al guardar los cambios.")
                         }
+                        Log.i("FilmEditScreen", "Cambios guardados para la película: ${titulo}")
+
                         navController.previousBackStackEntry?.savedStateHandle?.set(
                             "key_result",
                             RESULT_OK
@@ -271,6 +278,8 @@ fun FilmEditScreen(navController: NavHostController, indice: Int) {
 
                 Button(
                     onClick = {
+                        Log.i("FilmEditScreen", "Cambios descartados, volviendo a la pantalla anterior.")
+
                         navController.previousBackStackEntry?.savedStateHandle?.set(
                             "key_result",
                             RESULT_CANCELED
